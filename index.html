@@ -6,135 +6,129 @@
 <title>How are you actually using AI? — A self-assessment</title>
 <style>
   :root {
-    --ink: #15171a;
-    --muted: #6b7280;
-    --faint: #9ca3af;
-    --line: #e7e8ec;
-    --bg: #fbfbfc;
-    --card: #ffffff;
-    --accent: #3b5bdb;
-    --accent-soft: #eef1fe;
-    --teal: #0d9488;
-    --warn: #b45309;
-    --warn-soft: #fdf4e7;
-    --good: #15803d;
-    --good-soft: #effaf1;
-    --radius: 14px;
-    --shadow: 0 1px 2px rgba(20,23,26,.04), 0 8px 24px rgba(20,23,26,.05);
-    --maxw: 760px;
+    --ink: #0a0a0a;
+    --paper: #ffffff;
+    --g1: #5e5e5e;
+    --g2: #8c8c8c;
+    --g3: #c2c2c2;
+    --line: #e6e6e6;
+    --line2: #cfcfcf;
+    --soft: #f4f4f4;
+    --maxw: 680px;
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
-  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.55; font-size: 17px; -webkit-font-smoothing: antialiased; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 56px 22px 120px; }
-  .kicker { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; color: var(--accent); margin: 0 0 14px; }
-  h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -.02em; margin: 0 0 18px; font-weight: 800; }
-  .lede { font-size: 18px; color: var(--ink); margin: 0 0 14px; }
-  .lede b { font-weight: 700; }
-  .sub { color: var(--muted); margin: 0 0 8px; }
-  .sub b { color: var(--ink); }
-  .rule { height: 1px; background: var(--line); border: 0; margin: 40px 0; }
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, sans-serif;
+    color: var(--ink); background: var(--paper);
+    line-height: 1.5; font-size: 17px; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 64px 24px 140px; }
 
-  .steplabel { display: flex; align-items: baseline; gap: 10px; margin: 0 0 6px; }
-  .steplabel .num { font-size: 12px; font-weight: 800; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
-  h2 { font-size: 22px; letter-spacing: -.01em; margin: 0 0 4px; font-weight: 750; }
-  .hint { color: var(--muted); font-size: 15px; margin: 0 0 22px; }
-  .hint b { color: var(--ink); }
+  .kicker { text-transform: uppercase; letter-spacing: .2em; font-size: 11px; font-weight: 700; color: var(--g2); margin: 0 0 20px; }
+  h1 { font-size: clamp(32px, 6.5vw, 48px); line-height: 1.02; letter-spacing: -.028em; font-weight: 800; margin: 0 0 24px; }
+  .lede { font-size: 19px; line-height: 1.42; margin: 0 0 16px; }
+  .sub { color: var(--g1); font-size: 16px; margin: 0; }
+  .sub b, .lede b { color: var(--ink); font-weight: 700; }
 
-  .tier { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin: 24px 0 10px; }
-  .tier:first-of-type { margin-top: 0; }
-  .tier .note { font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--muted); font-size: 13px; margin-left: 8px; }
+  hr.major { border: 0; border-top: 1px solid var(--ink); margin: 52px 0 0; }
+  .step { margin-top: 38px; }
+  .step-no { text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 700; color: var(--ink); }
+  .step h2 { font-size: clamp(22px, 4vw, 27px); letter-spacing: -.015em; font-weight: 750; margin: 10px 0 6px; }
+  .step .hint { color: var(--g1); font-size: 15px; margin: 0; }
+  .step .hint b { color: var(--ink); }
 
-  .caps { display: flex; flex-direction: column; gap: 10px; }
-  .cap { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 15px 18px; }
-  .cap-name { font-weight: 700; font-size: 16px; display: block; }
-  .cap-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--faint); margin-left: 8px; }
-  .cap-tell { display: block; color: var(--muted); font-size: 15px; margin-top: 3px; }
-  .cap-stem { display: block; font-weight: 600; font-size: 16px; }
+  .tier { display: flex; align-items: baseline; gap: 12px; margin: 36px 0 0; flex-wrap: wrap; }
+  .tier .t-name { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 800; }
+  .tier .t-note { color: var(--g2); font-size: 13px; }
 
-  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 13px; }
-  .seg label { position: relative; cursor: pointer; }
+  /* question item — no card; hairline-separated */
+  .item { padding: 24px 0; border-top: 1px solid var(--line); }
+  .item-label { text-transform: uppercase; letter-spacing: .09em; font-size: 11px; font-weight: 700; color: var(--g2); }
+  .item-stmt { font-size: 17.5px; line-height: 1.4; font-weight: 500; margin: 7px 0 16px; max-width: 54ch; }
+
+  /* compact, recessive answer strip */
+  .seg { display: inline-flex; border: 1px solid var(--line2); }
+  .seg label { position: relative; cursor: pointer; display: block; }
+  .seg label + label { border-left: 1px solid var(--line2); }
   .seg input { position: absolute; opacity: 0; pointer-events: none; }
-  .seg span { display: block; text-align: center; font-size: 13px; font-weight: 600; padding: 9px 4px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: #fcfcfd; transition: all .12s; line-height: 1.2; }
-  .seg label:hover span { border-color: #c7cbe8; }
-  .seg input:checked + span { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .seg.tealset input:checked + span { background: var(--teal); border-color: var(--teal); }
-  .seg .lvl { display: block; font-size: 10px; font-weight: 700; opacity: .55; letter-spacing: .04em; }
-  .seg input:checked + span .lvl { opacity: .8; }
+  .seg span { display: block; padding: 8px 17px; font-size: 13px; font-weight: 500; color: var(--g1); background: var(--paper); transition: background .1s, color .1s; white-space: nowrap; }
+  .seg label:hover span { background: var(--soft); }
+  .seg input:checked + span { background: var(--ink); color: #fff; }
+  .seg input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  .cta { text-align: center; margin: 44px 0 0; }
-  button.go { appearance: none; border: 0; cursor: pointer; background: var(--ink); color: #fff; font-size: 17px; font-weight: 650; padding: 15px 34px; border-radius: 999px; transition: transform .1s, background .15s; }
-  button.go:hover { background: #000; }
-  button.go:active { transform: scale(.98); }
+  .cta { margin: 52px 0 0; }
+  button.go { appearance: none; border: 0; cursor: pointer; background: var(--ink); color: #fff; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: 17px 32px; width: 100%; }
+  button.go:active { opacity: .85; }
 
-  #results { display: none; margin-top: 12px; }
-  #results.show { display: block; animation: rise .4s ease; }
-  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  #results { display: none; }
+  #results.show { display: block; animation: fade .35s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
-  .result-head { text-align: center; margin: 8px 0 6px; }
-  .result-head .rl-kick { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; color: var(--muted); }
-  .result-head h2 { font-size: clamp(26px, 5vw, 34px); margin: 6px 0 8px; }
-  .result-head h2.target { color: var(--good); }
-  .result-head h2.trap { color: var(--warn); }
-  .result-head h2.neutral { color: var(--accent); }
-  .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-  .chip { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; padding: 6px 14px; font-weight: 650; font-size: 13px; background: var(--accent-soft); color: var(--accent); }
-  .chip.teal { background: #e2f5f2; color: var(--teal); }
-  .chip .dotmark { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .r-top { padding-top: 44px; border-top: 1px solid var(--ink); margin-top: 8px; }
+  .r-kick { text-transform: uppercase; letter-spacing: .18em; font-size: 11px; font-weight: 700; color: var(--g2); }
+  .r-name { font-size: clamp(30px, 6.5vw, 44px); font-weight: 800; letter-spacing: -.025em; line-height: 1.05; margin: 10px 0 6px; }
+  .r-short { color: var(--g1); font-size: 16px; margin: 0 0 26px; }
 
-  .matrix-wrap { margin: 30px auto 8px; max-width: 460px; }
-  .matrix { position: relative; width: 100%; aspect-ratio: 1 / 1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); overflow: hidden; }
-  .quad { position: absolute; width: 50%; height: 50%; padding: 13px; }
-  .quad .qn { font-weight: 750; font-size: 14px; }
-  .quad .qd { font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
-  .q-tl { top: 0; left: 0; background: var(--warn-soft); }
-  .q-tr { top: 0; right: 0; text-align: right; background: var(--good-soft); }
-  .q-bl { bottom: 0; left: 0; }
-  .q-br { bottom: 0; right: 0; text-align: right; }
-  .mline { position: absolute; background: var(--line); }
-  .mline.h { left: 0; right: 0; top: 50%; height: 1px; }
-  .mline.v { top: 0; bottom: 0; left: 50%; width: 1px; }
-  .you { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 2px 8px rgba(59,91,219,.5); transform: translate(-50%, 50%); transition: left .5s cubic-bezier(.2,.7,.2,1), bottom .5s cubic-bezier(.2,.7,.2,1); z-index: 3; }
-  .you::after { content: "You"; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--accent); white-space: nowrap; }
-  .axislabel { font-size: 12px; color: var(--faint); text-align: center; font-weight: 600; }
+  .readout { display: flex; border: 1px solid var(--line2); }
+  .ro { flex: 1; padding: 16px 18px; }
+  .ro + .ro { border-left: 1px solid var(--line2); }
+  .ro-l { text-transform: uppercase; letter-spacing: .1em; font-size: 10px; font-weight: 700; color: var(--g2); display: block; }
+  .ro-v { font-size: 23px; font-weight: 800; margin: 5px 0 2px; letter-spacing: -.01em; }
+  .ro-v small { font-size: 13px; color: var(--g2); font-weight: 600; }
+  .ro-state { font-size: 12px; color: var(--g1); font-weight: 600; }
+
+  /* 2x2 — stark, mono */
+  .matrix-wrap { margin: 30px 0 0; }
+  .mgrid { display: grid; grid-template-columns: 14px 1fr; grid-template-rows: 1fr 14px; gap: 8px; max-width: 420px; margin: 0 auto; }
+  .axislabel { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--g2); text-align: center; font-weight: 700; }
   .axis-y { writing-mode: vertical-rl; transform: rotate(180deg); }
-  .matrix-grid { display: grid; grid-template-columns: 18px 1fr; grid-template-rows: 1fr 18px; gap: 6px; }
-  .matrix-grid .axis-x { grid-column: 2; }
+  .axis-x { grid-column: 2; }
+  .matrix { position: relative; aspect-ratio: 1 / 1; border: 1px solid var(--ink); }
+  .quad { position: absolute; width: 50%; height: 50%; padding: 13px; transition: background .3s; }
+  .quad .qn { font-weight: 750; font-size: 13px; }
+  .quad .qd { font-size: 11px; color: var(--g2); margin-top: 2px; line-height: 1.3; }
+  .quad.active { background: var(--soft); }
+  .q-tl { top: 0; left: 0; } .q-tr { top: 0; right: 0; text-align: right; }
+  .q-bl { bottom: 0; left: 0; } .q-br { bottom: 0; right: 0; text-align: right; }
+  .mline { position: absolute; background: var(--line2); }
+  .mline.h { left: 0; right: 0; top: 50%; height: 1px; } .mline.v { top: 0; bottom: 0; left: 50%; width: 1px; }
+  .you { position: absolute; width: 16px; height: 16px; border-radius: 50%; background: var(--ink); border: 3px solid #fff; box-shadow: 0 0 0 1.5px var(--ink); transform: translate(-50%, 50%); transition: left .5s cubic-bezier(.2,.7,.2,1), bottom .5s cubic-bezier(.2,.7,.2,1); z-index: 3; }
+  .you::after { content: "You"; position: absolute; top: -21px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
 
-  .profile { margin-top: 6px; }
-  .prow { display: grid; grid-template-columns: 116px 1fr 78px; gap: 12px; align-items: center; padding: 5px 0; }
-  .prow .pn { font-size: 14px; font-weight: 650; }
-  .pbar { display: block; height: 8px; border-radius: 999px; background: #eef0f3; overflow: hidden; }
-  .pfill { display: block; height: 100%; border-radius: 999px; background: var(--accent); transition: width .5s ease; }
-  .prow.found .pfill { background: var(--faint); }
-  .prow.imp .pfill { background: var(--teal); }
-  .pval { font-size: 12px; color: var(--muted); text-align: right; }
-  .pgroup { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin: 14px 0 4px; }
+  .section { padding-top: 32px; border-top: 1px solid var(--line); margin-top: 32px; }
+  .section h3 { text-transform: uppercase; letter-spacing: .1em; font-size: 12px; font-weight: 800; margin: 0 0 14px; }
+  .section p { margin: 0 0 12px; } .section p:last-child { margin-bottom: 0; }
+  .section.trap { border-top: 2px solid var(--ink); }
+
+  .prow { display: grid; grid-template-columns: 124px 1fr 80px; gap: 14px; align-items: center; padding: 6px 0; }
+  .prow .pn { font-size: 14px; font-weight: 600; }
+  .pbar { display: block; height: 6px; background: var(--soft); }
+  .pfill { display: block; height: 100%; background: var(--ink); transition: width .5s ease; }
+  .prow.found .pfill { background: var(--g3); }
+  .pval { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--g2); text-align: right; font-weight: 600; }
+  .pgroup { text-transform: uppercase; letter-spacing: .12em; font-size: 10px; font-weight: 800; color: var(--g2); margin: 20px 0 6px; }
   .pgroup:first-child { margin-top: 0; }
 
-  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; margin-top: 18px; }
-  .panel h3 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 750; }
-  .panel p { margin: 0 0 12px; } .panel p:last-child { margin-bottom: 0; }
-  .nextmove { border-left: 3px solid var(--accent); }
-  .trapnote { background: var(--warn-soft); border: 1px solid #f3e3c4; }
-  .trapnote h3 { color: var(--warn); }
+  .foot { margin-top: 40px; display: flex; border: 1px solid var(--line2); width: fit-content; }
+  .foot button { appearance: none; cursor: pointer; background: var(--paper); border: 0; font-size: 12px; font-weight: 700; padding: 12px 22px; color: var(--ink); text-transform: uppercase; letter-spacing: .08em; }
+  .foot button + button { border-left: 1px solid var(--line2); }
+  .foot button:hover { background: var(--soft); }
+  .foot button.done { background: var(--ink); color: #fff; }
 
-  .footer-actions { text-align: center; margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-  button.reset, button.share { appearance: none; cursor: pointer; font-size: 14px; padding: 9px 18px; border-radius: 999px; transition: all .15s; }
-  button.reset { background: none; border: 1px solid var(--line); color: var(--muted); }
-  button.reset:hover { border-color: var(--faint); color: var(--ink); }
-  button.share { background: var(--accent-soft); border: 1px solid #d4dafb; color: var(--accent); font-weight: 650; }
-  button.share:hover { background: #e4e9fe; }
-  button.share.done { background: var(--good-soft); border-color: #cdeed6; color: var(--good); }
-
-  .fineprint { color: var(--faint); font-size: 13px; text-align: center; margin-top: 40px; line-height: 1.5; }
+  .fineprint { color: var(--g2); font-size: 13px; margin-top: 52px; line-height: 1.55; border-top: 1px solid var(--line); padding-top: 22px; }
 
   @media (max-width: 520px) {
     body { font-size: 16px; }
-    .wrap { padding: 38px 16px 90px; }
-    .seg span { font-size: 12px; padding: 8px 2px; }
+    .wrap { padding: 44px 18px 90px; }
+    .seg { display: flex; width: 100%; }
+    .seg label { flex: 1; }
+    .seg span { padding: 10px 4px; text-align: center; font-size: 12px; }
+    .readout { flex-direction: column; }
+    .ro + .ro { border-left: 0; border-top: 1px solid var(--line2); }
+    .prow { grid-template-columns: 88px 1fr 62px; gap: 8px; }
     .quad .qd { display: none; }
-    .prow { grid-template-columns: 92px 1fr 62px; gap: 8px; }
   }
 </style>
 </head>
@@ -143,86 +137,77 @@
 
   <p class="kicker">AI usage · self-assessment</p>
   <h1>Everyone thinks they're using AI fully.</h1>
-  <p class="lede">They're not — they're just using it <b>differently</b>. And almost everyone rates themselves higher than they are, because <b>frequency feels like maturity.</b> It isn't.</p>
-  <p class="sub">There are two <b>foundation modes</b> everyone shares, and five <b>capabilities that compound</b> — but capability is only half of it. The other half is whether your AI work actually <b>lands</b>: shipped, used by others, a number that moved. This rates both on <b>what you've genuinely done</b> — not what you intend. Rate each honestly.</p>
+  <p class="lede">They're not. Everyone uses it <b>differently</b>, and most people rate themselves higher than they are, because <b>frequency feels like maturity.</b> It isn't.</p>
+  <p class="sub">Two things make the difference: how many of the things AI can do for you that you actually <b>practise</b>, and whether your AI work has actually <b>landed</b> — shipped, used by others, a number that moved. This rates both on what you've genuinely done. Answer for the last two weeks, honestly.</p>
 
-  <hr class="rule" />
+  <hr class="major" />
 
   <!-- STEP 1 -->
-  <div class="steplabel"><span class="num">Step 1 · Capability</span></div>
-  <h2>How deep does each one go for you?</h2>
-  <p class="hint">Rate what's <b>true of your last two weeks</b> — "could do" doesn't count. Foundation modes don't earn maturity on their own; the five capabilities are what compound.</p>
+  <div class="step">
+    <span class="step-no">Step 1 · Capability</span>
+    <h2>How deep does each one go for you?</h2>
+    <p class="hint">Rate what's <b>true of your last two weeks</b> — "could do" doesn't count.</p>
 
-  <div class="tier">Foundation <span class="note">— everyone does these; they're the floor, not the goal</span></div>
-  <div class="caps" id="caps-foundation"></div>
+    <div class="tier"><span class="t-name">Foundation</span><span class="t-note">everyone does these — the floor, not the goal</span></div>
+    <div id="caps-foundation"></div>
 
-  <div class="tier">Leverage capabilities <span class="note">— additive; collect and deepen them in any order</span></div>
-  <div class="caps" id="caps-leverage"></div>
+    <div class="tier"><span class="t-name">Leverage capabilities</span><span class="t-note">additive — collect and deepen in any order</span></div>
+    <div id="caps-leverage"></div>
+  </div>
 
-  <hr class="rule" />
+  <hr class="major" />
 
   <!-- STEP 2 -->
-  <div class="steplabel"><span class="num">Step 2 · Impact</span></div>
-  <h2>What came of your AI work?</h2>
-  <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b> — not what you meant to happen, not how much you care. Evidence only.</p>
-  <div class="caps" id="caps-impact"></div>
+  <div class="step">
+    <span class="step-no">Step 2 · Impact</span>
+    <h2>What came of your AI work?</h2>
+    <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b> — evidence, not intent.</p>
+    <div id="caps-impact"></div>
+  </div>
 
   <div class="cta"><button class="go" id="go">Show me where I land</button></div>
 
   <!-- RESULTS -->
   <div id="results">
-    <hr class="rule" />
-    <div class="result-head">
-      <div class="rl-kick">Where you land</div>
-      <h2 id="r-quad">—</h2>
-      <div class="chips" id="r-chips"></div>
+    <div class="r-top">
+      <div class="r-kick">Your result</div>
+      <div class="r-name" id="r-name">—</div>
+      <div class="r-short" id="r-short">—</div>
+      <div class="readout" id="r-readout"></div>
     </div>
 
     <div class="matrix-wrap">
-      <div class="matrix-grid">
-        <div class="axis-y axislabel">More capability →</div>
+      <div class="mgrid">
+        <div class="axislabel axis-y">More capability →</div>
         <div class="matrix">
-          <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">Lots of capability, little lands. The trap.</div></div>
-          <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real measured impact. The target.</div></div>
-          <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional, and little lands yet.</div></div>
+          <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">High capability, little lands.</div></div>
+          <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real impact.</div></div>
+          <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional; little lands.</div></div>
           <div class="quad q-br"><div class="qn">Sharp operator</div><div class="qd">Lean tools, but it lands.</div></div>
           <div class="mline h"></div>
           <div class="mline v"></div>
           <div class="you" id="you"></div>
         </div>
         <div></div>
-        <div class="axis-x axislabel">Output (little lands) ← → Outcome (real impact)</div>
+        <div class="axislabel axis-x">Output (little lands) → Outcome (real impact)</div>
       </div>
     </div>
 
-    <div class="panel">
-      <h3>Your profile</h3>
-      <div class="profile" id="r-profile"></div>
-    </div>
+    <div class="section"><h3>What this means</h3><p id="r-meaning">—</p></div>
 
-    <div class="panel">
-      <h3>What this means</h3>
-      <p id="r-meaning">—</p>
-    </div>
+    <div class="section"><h3>Your profile</h3><div id="r-profile"></div></div>
 
-    <div class="panel nextmove">
-      <h3>Your next move</h3>
-      <p id="r-next">—</p>
-      <p id="r-nudge"></p>
-    </div>
+    <div class="section"><h3>Your next move</h3><p id="r-next">—</p><p id="r-nudge"></p></div>
 
-    <div class="panel trapnote" id="r-trap" style="display:none;">
-      <h3>⚠ The trap you're in</h3>
-      <p id="r-trap-text">—</p>
-    </div>
+    <div class="section trap" id="r-trap" style="display:none;"><h3>The trap you're in</h3><p id="r-trap-text">—</p></div>
 
-    <div class="footer-actions">
-      <button class="share" id="share">Copy share link</button>
-      <button class="reset" id="reset">Start over</button>
+    <div class="foot">
+      <button id="share">Copy share link</button>
+      <button id="reset">Start over</button>
     </div>
   </div>
 
-  <p class="fineprint">A self-assessment, not a scoreboard. Maturity is capability × whether it actually lands × honesty about both — not the one impressive thing you tried once. Building capability without shipping outcomes just means producing more, faster.</p>
+  <p class="fineprint">A self-assessment, not a scoreboard. Maturity is capability multiplied by whether it actually lands — not the one impressive thing you tried once. Your answers stay in the share link; nothing is sent anywhere.</p>
 
 </div>
 
@@ -264,20 +249,18 @@ const ALL = FOUNDATION.concat(LEVERAGE);
 const DEPTH = ["Never", "Tried it", "Regularly", "Always"];
 const FREQ = ["Never", "Once", "A few times", "Often"];
 
+function seg(key, labels) {
+  return '<div class="seg" role="radiogroup" aria-label="' + key + '">' +
+    labels.map((d, v) => '<label><input type="radio" name="' + key + '" value="' + v + '"><span>' + d + '</span></label>').join('') +
+    '</div>';
+}
 function capCard(c) {
-  const segs = DEPTH.map((d, v) =>
-    '<label><input type="radio" name="' + c.key + '" value="' + v + '">' +
-    '<span>' + d + '<span class="lvl">' + v + '</span></span></label>').join('');
-  return '<div class="cap"><span class="cap-name">' + c.name + '<span class="cap-tag">' + c.tag + '</span></span>' +
-    '<span class="cap-tell">' + c.tell + '</span>' +
-    '<div class="seg" role="radiogroup" aria-label="' + c.name + ' depth">' + segs + '</div></div>';
+  return '<div class="item"><span class="item-label">' + c.name + ' · ' + c.tag + '</span>' +
+    '<p class="item-stmt">' + c.tell + '</p>' + seg(c.key, DEPTH) + '</div>';
 }
 function impactCard(c) {
-  const segs = FREQ.map((d, v) =>
-    '<label><input type="radio" name="' + c.key + '" value="' + v + '">' +
-    '<span>' + d + '<span class="lvl">' + v + '</span></span></label>').join('');
-  return '<div class="cap"><span class="cap-stem">' + c.stem + '</span>' +
-    '<div class="seg tealset" role="radiogroup" aria-label="' + c.name + '">' + segs + '</div></div>';
+  return '<div class="item"><span class="item-label">' + c.name + '</span>' +
+    '<p class="item-stmt">' + c.stem + '</p>' + seg(c.key, FREQ) + '</div>';
 }
 document.getElementById('caps-foundation').innerHTML = FOUNDATION.map(capCard).join('');
 document.getElementById('caps-leverage').innerHTML = LEVERAGE.map(capCard).join('');
@@ -286,61 +269,44 @@ document.getElementById('caps-impact').innerHTML = IMPACT.map(impactCard).join('
 let resultsVisible = false;
 document.addEventListener('change', (e) => { if (e.target.matches('.seg input') && resultsVisible) render(); });
 
-function depthOf(key) {
-  const el = document.querySelector('input[name="' + key + '"]:checked');
-  return el ? +el.value : 0;
-}
+function depthOf(key) { const el = document.querySelector('input[name="' + key + '"]:checked'); return el ? +el.value : 0; }
 function compute() {
   const found = FOUNDATION.map(c => depthOf(c.key));
   const lev = LEVERAGE.map(c => depthOf(c.key));
   const imp = IMPACT.map(c => depthOf(c.key));
   return {
     found, lev, imp,
-    foundationScore: found.reduce((a, b) => a + b, 0),   // 0..6
-    leverageScore: lev.reduce((a, b) => a + b, 0),       // 0..15
-    impactScore: imp.reduce((a, b) => a + b, 0),         // 0..12
+    foundationScore: found.reduce((a, b) => a + b, 0),
+    leverageScore: lev.reduce((a, b) => a + b, 0),
+    impactScore: imp.reduce((a, b) => a + b, 0),
   };
 }
-function band(score) {
-  if (score <= 2) return "Foundation";
-  if (score <= 5) return "Emerging";
-  if (score <= 9) return "Integrated";
-  return "Fluent";
-}
-function impactWord(score) {
-  if (score <= 2) return "not landing yet";
-  if (score <= 4) return "starting to land";
-  if (score <= 8) return "landing";
-  return "compounding";
-}
-function quadrant(leverageScore, impactScore) {
-  const high = leverageScore >= 6;     // real capability portfolio
-  const outcome = impactScore >= 5;    // real-world evidence it lands
+function band(s) { return s <= 2 ? "Foundation" : s <= 5 ? "Emerging" : s <= 9 ? "Integrated" : "Fluent"; }
+function impactWord(s) { return s <= 2 ? "not landing yet" : s <= 4 ? "starting to land" : s <= 8 ? "landing" : "compounding"; }
+function quadrant(lv, im) {
+  const high = lv >= 6, outcome = im >= 5;
   if (high && outcome) return 'target';
   if (high && !outcome) return 'trap';
   if (!high && outcome) return 'sharp';
   return 'dabbler';
 }
 const QUAD = {
-  target: { name: "Force multiplier", cls: "target",
+  target: { name: "Force multiplier", short: "High capability, and it lands.",
     meaning: "Broad, deep capability — and it lands: your AI work ships, gets used by others, moves numbers you actually check. Rare, and the target. The risk now is complacency: as you add autonomy, keep auditing that it's pointed at real outcomes, not just impressive throughput." },
-  trap: { name: "Output factory", cls: "trap",
+  trap: { name: "Output factory", short: "High capability, little lands.",
     meaning: "You've built real capability — several skills, practised deeply. From the outside it looks like the most advanced quadrant, which is exactly why it's the trap: little of it has actually shipped, been picked up by others, or moved a number you measured. The fix isn't more capability; it's pointing what you already have at a real outcome and proving it landed." },
-  sharp: { name: "Sharp operator", cls: "neutral",
+  sharp: { name: "Sharp operator", short: "Lean tools, but it lands.",
     meaning: "You keep your AI use lean — but it lands: things ship, people use them, results show up. That already beats people running fancier setups that never leave the lab. Your gap isn't impact, it's leverage: the same delivery discipline applied to more connected, persistent, or orchestrated AI would compound." },
-  dabbler: { name: "Dabbler", cls: "neutral",
+  dabbler: { name: "Dabbler", short: "Early days — little has landed yet.",
     meaning: "You use AI here and there, and little of it has landed yet. A fine place to start — and the biggest gains are right in front of you. Move on both axes: build real capability on top of the foundation, and start shipping AI work whose results you actually track." },
 };
+const QUAD_CELL = { trap: 'q-tl', target: 'q-tr', dabbler: 'q-bl', sharp: 'q-br' };
 
 function nextMove(lev, leverageScore) {
-  if (leverageScore === 0) {
-    return "You haven't moved past the foundation yet — and that's the honest starting line. " + LEVERAGE[0].deepen;
-  }
+  if (leverageScore === 0) return "You haven't moved past the foundation yet — and that's the honest starting line. " + LEVERAGE[0].deepen;
   let gapIdx = -1, gapVal = 4;
   lev.forEach((v, i) => { if (v < 3 && v < gapVal) { gapVal = v; gapIdx = i; } });
-  if (gapIdx === -1) {
-    return "You're deep across every capability — there's no thin spot left to fill. The frontier now is the other axis: keep what you've built pointed at outcomes you can actually show landed.";
-  }
+  if (gapIdx === -1) return "You're deep across every capability — there's no thin spot left to fill. The frontier now is the other axis: keep what you've built pointed at outcomes you can actually show landed.";
   const c = LEVERAGE[gapIdx];
   const lead = gapVal === 0
     ? "Your biggest untapped capability is <b>" + c.name + "</b> — you don't do this yet. "
@@ -353,42 +319,33 @@ function render() {
   const q = quadrant(leverageScore, impactScore);
   const qd = QUAD[q];
 
-  const h = document.getElementById('r-quad');
-  h.textContent = qd.name;
-  h.className = qd.cls;
-  document.getElementById('r-chips').innerHTML =
-    '<span class="chip"><span class="dotmark"></span>Capability ' + leverageScore + '/15 · ' + band(leverageScore) + '</span>' +
-    '<span class="chip teal"><span class="dotmark"></span>Impact ' + impactScore + '/12 · ' + impactWord(impactScore) + '</span>';
+  document.getElementById('r-name').textContent = qd.name;
+  document.getElementById('r-short').textContent = qd.short;
+  document.getElementById('r-readout').innerHTML =
+    '<div class="ro"><span class="ro-l">Capability</span><div class="ro-v">' + leverageScore + '<small> / 15</small></div><span class="ro-state">' + band(leverageScore) + '</span></div>' +
+    '<div class="ro"><span class="ro-l">Impact</span><div class="ro-v">' + impactScore + '<small> / 12</small></div><span class="ro-state">' + impactWord(impactScore) + '</span></div>';
 
-  // dot: x = impact evidence, y = capability portfolio
   document.getElementById('you').style.left = Math.max(6, Math.min(94, (impactScore / 12) * 100)) + '%';
   document.getElementById('you').style.bottom = Math.max(6, Math.min(94, (leverageScore / 15) * 100)) + '%';
+  document.querySelectorAll('.quad').forEach(el => el.classList.remove('active'));
+  document.querySelector('.' + QUAD_CELL[q]).classList.add('active');
 
-  // profile
   const prow = (name, v, cls, labels) =>
-    '<div class="prow' + (cls ? ' ' + cls : '') + '">' +
-    '<span class="pn">' + name + '</span>' +
+    '<div class="prow' + (cls ? ' ' + cls : '') + '"><span class="pn">' + name + '</span>' +
     '<span class="pbar"><span class="pfill" style="width:' + (v / 3 * 100) + '%"></span></span>' +
     '<span class="pval">' + labels[v] + '</span></div>';
   document.getElementById('r-profile').innerHTML =
-    '<div class="pgroup">Foundation</div>' +
-    FOUNDATION.map((c, i) => prow(c.name, found[i], 'found', DEPTH)).join('') +
-    '<div class="pgroup">Leverage capabilities</div>' +
-    LEVERAGE.map((c, i) => prow(c.name, lev[i], '', DEPTH)).join('') +
-    '<div class="pgroup">Impact evidence</div>' +
-    IMPACT.map((c, i) => prow(c.name, imp[i], 'imp', FREQ)).join('');
+    '<div class="pgroup">Foundation</div>' + FOUNDATION.map((c, i) => prow(c.name, found[i], 'found', DEPTH)).join('') +
+    '<div class="pgroup">Leverage capabilities</div>' + LEVERAGE.map((c, i) => prow(c.name, lev[i], '', DEPTH)).join('') +
+    '<div class="pgroup">Impact evidence</div>' + IMPACT.map((c, i) => prow(c.name, imp[i], '', FREQ)).join('');
 
   document.getElementById('r-meaning').textContent = qd.meaning;
   document.getElementById('r-next').innerHTML = nextMove(lev, leverageScore);
 
-  const nudge = document.getElementById('r-nudge');
   const notes = [];
-  if (leverageScore < 3 && foundationScore >= 4) {
-    notes.push("You're fluent at the foundation — chat and one-off artifacts — but haven't built leverage on top of it. That's the gap, and it's the biggest one.");
-  }
-  if (impactScore < 5) {
-    notes.push("And on the impact axis: little of your AI work has visibly landed yet — not much has shipped, been picked up by others, or moved a number you checked. Capability without that is just output. Take your most-used AI work and find the one result it actually changed.");
-  }
+  if (leverageScore < 3 && foundationScore >= 4) notes.push("You're fluent at the foundation — chat and one-off artifacts — but haven't built leverage on top of it. That's the gap, and it's the biggest one.");
+  if (impactScore < 5) notes.push("And on the impact axis: little of your AI work has visibly landed yet — not much has shipped, been picked up by others, or moved a number you checked. Capability without that is just output. Take your most-used AI work and find the one result it actually changed.");
+  const nudge = document.getElementById('r-nudge');
   nudge.textContent = notes.join(' ');
   nudge.style.display = notes.length ? '' : 'none';
 
@@ -396,43 +353,30 @@ function render() {
   if (q === 'trap') {
     trap.style.display = '';
     document.getElementById('r-trap-text').textContent = "You're high on capability and low on impact evidence — the quadrant most likely to mistake itself for the top. The people who most confidently believe they've “mastered AI” usually live right here. The honest test: name one thing that's measurably better because of your AI work, that someone other than you relies on — not just faster or more abundant output.";
-  } else {
-    trap.style.display = 'none';
-  }
+  } else { trap.style.display = 'none'; }
 
   syncURL();
 }
 
-// --- Shareable state in the URL hash: 7 capability digits . 4 impact digits ---
 function encodeState() {
-  const caps = ALL.map(c => depthOf(c.key)).join('');
-  const imp = IMPACT.map(c => depthOf(c.key)).join('');
-  return 's=' + caps + '.' + imp;
+  return 's=' + ALL.map(c => depthOf(c.key)).join('') + '.' + IMPACT.map(c => depthOf(c.key)).join('');
 }
-function syncURL() {
-  try { history.replaceState(null, '', location.pathname + location.search + '#' + encodeState()); } catch (e) {}
-}
-function setRadio(key, v) {
-  const el = document.querySelector('input[name="' + key + '"][value="' + v + '"]');
-  if (el) el.checked = true;
-}
+function syncURL() { try { history.replaceState(null, '', location.pathname + location.search + '#' + encodeState()); } catch (e) {} }
+function setRadio(key, v) { const el = document.querySelector('input[name="' + key + '"][value="' + v + '"]'); if (el) el.checked = true; }
 function applyStateFromURL() {
   const m = (location.hash || '').match(/s=([0-3]{0,7})\.([0-3]{0,4})/);
   if (!m) return false;
-  const caps = m[1], imp = m[2];
-  ALL.forEach((c, i) => setRadio(c.key, caps[i] !== undefined ? +caps[i] : 0));
-  IMPACT.forEach((c, i) => setRadio(c.key, imp[i] !== undefined ? +imp[i] : 0));
+  ALL.forEach((c, i) => setRadio(c.key, m[1][i] !== undefined ? +m[1][i] : 0));
+  IMPACT.forEach((c, i) => setRadio(c.key, m[2][i] !== undefined ? +m[2][i] : 0));
   return true;
 }
 
 document.getElementById('go').addEventListener('click', () => {
   resultsVisible = true;
   const res = document.getElementById('results');
-  res.classList.add('show');
-  render();
+  res.classList.add('show'); render();
   res.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
-
 document.getElementById('reset').addEventListener('click', () => {
   document.querySelectorAll('.seg input').forEach(r => { r.checked = false; });
   resultsVisible = false;
@@ -440,21 +384,18 @@ document.getElementById('reset').addEventListener('click', () => {
   try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
-
 document.getElementById('share').addEventListener('click', (e) => {
   syncURL();
   const url = location.href, btn = e.currentTarget;
-  const done = () => { btn.textContent = 'Link copied ✓'; btn.classList.add('done'); setTimeout(() => { btn.textContent = 'Copy share link'; btn.classList.remove('done'); }, 2000); };
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(done).catch(() => prompt('Copy your share link:', url));
-  } else { prompt('Copy your share link:', url); }
+  const done = () => { btn.textContent = 'Link copied'; btn.classList.add('done'); setTimeout(() => { btn.textContent = 'Copy share link'; btn.classList.remove('done'); }, 2000); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done).catch(() => prompt('Copy your share link:', url));
+  else prompt('Copy your share link:', url);
 });
 
 if (applyStateFromURL()) {
   resultsVisible = true;
   const res = document.getElementById('results');
-  res.classList.add('show');
-  render();
+  res.classList.add('show'); render();
   setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
 }
 </script>
