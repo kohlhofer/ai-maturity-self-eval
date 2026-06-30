@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How are you actually using AI? — A self-assessment</title>
+<style>
+  :root {
+    --ink: #15171a;
+    --muted: #6b7280;
+    --faint: #9ca3af;
+    --line: #e7e8ec;
+    --bg: #fbfbfc;
+    --card: #ffffff;
+    --accent: #3b5bdb;
+    --accent-soft: #eef1fe;
+    --teal: #0d9488;
+    --warn: #b45309;
+    --warn-soft: #fdf4e7;
+    --good: #15803d;
+    --good-soft: #effaf1;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(20,23,26,.04), 0 8px 24px rgba(20,23,26,.05);
+    --maxw: 760px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.55; font-size: 17px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 56px 22px 120px; }
+  .kicker { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; color: var(--accent); margin: 0 0 14px; }
+  h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.1; letter-spacing: -.02em; margin: 0 0 18px; font-weight: 800; }
+  .lede { font-size: 18px; color: var(--ink); margin: 0 0 14px; }
+  .lede b { font-weight: 700; }
+  .sub { color: var(--muted); margin: 0 0 8px; }
+  .sub b { color: var(--ink); }
+  .rule { height: 1px; background: var(--line); border: 0; margin: 40px 0; }
+
+  .steplabel { display: flex; align-items: baseline; gap: 10px; margin: 0 0 6px; }
+  .steplabel .num { font-size: 12px; font-weight: 800; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+  h2 { font-size: 22px; letter-spacing: -.01em; margin: 0 0 4px; font-weight: 750; }
+  .hint { color: var(--muted); font-size: 15px; margin: 0 0 22px; }
+  .hint b { color: var(--ink); }
+
+  .tier { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin: 24px 0 10px; }
+  .tier:first-of-type { margin-top: 0; }
+  .tier .note { font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--muted); font-size: 13px; margin-left: 8px; }
+
+  .caps { display: flex; flex-direction: column; gap: 10px; }
+  .cap { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 15px 18px; }
+  .cap-name { font-weight: 700; font-size: 16px; display: block; }
+  .cap-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--faint); margin-left: 8px; }
+  .cap-tell { display: block; color: var(--muted); font-size: 15px; margin-top: 3px; }
+  .cap-stem { display: block; font-weight: 600; font-size: 16px; }
+
+  .seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 13px; }
+  .seg label { position: relative; cursor: pointer; }
+  .seg input { position: absolute; opacity: 0; pointer-events: none; }
+  .seg span { display: block; text-align: center; font-size: 13px; font-weight: 600; padding: 9px 4px; border: 1px solid var(--line); border-radius: 9px; color: var(--muted); background: #fcfcfd; transition: all .12s; line-height: 1.2; }
+  .seg label:hover span { border-color: #c7cbe8; }
+  .seg input:checked + span { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .seg.tealset input:checked + span { background: var(--teal); border-color: var(--teal); }
+  .seg .lvl { display: block; font-size: 10px; font-weight: 700; opacity: .55; letter-spacing: .04em; }
+  .seg input:checked + span .lvl { opacity: .8; }
+
+  .cta { text-align: center; margin: 44px 0 0; }
+  button.go { appearance: none; border: 0; cursor: pointer; background: var(--ink); color: #fff; font-size: 17px; font-weight: 650; padding: 15px 34px; border-radius: 999px; transition: transform .1s, background .15s; }
+  button.go:hover { background: #000; }
+  button.go:active { transform: scale(.98); }
+
+  #results { display: none; margin-top: 12px; }
+  #results.show { display: block; animation: rise .4s ease; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  .result-head { text-align: center; margin: 8px 0 6px; }
+  .result-head .rl-kick { text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .result-head h2 { font-size: clamp(26px, 5vw, 34px); margin: 6px 0 8px; }
+  .result-head h2.target { color: var(--good); }
+  .result-head h2.trap { color: var(--warn); }
+  .result-head h2.neutral { color: var(--accent); }
+  .chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; padding: 6px 14px; font-weight: 650; font-size: 13px; background: var(--accent-soft); color: var(--accent); }
+  .chip.teal { background: #e2f5f2; color: var(--teal); }
+  .chip .dotmark { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+  .matrix-wrap { margin: 30px auto 8px; max-width: 460px; }
+  .matrix { position: relative; width: 100%; aspect-ratio: 1 / 1; border: 1px solid var(--line); border-radius: 16px; background: var(--card); box-shadow: var(--shadow); overflow: hidden; }
+  .quad { position: absolute; width: 50%; height: 50%; padding: 13px; }
+  .quad .qn { font-weight: 750; font-size: 14px; }
+  .quad .qd { font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+  .q-tl { top: 0; left: 0; background: var(--warn-soft); }
+  .q-tr { top: 0; right: 0; text-align: right; background: var(--good-soft); }
+  .q-bl { bottom: 0; left: 0; }
+  .q-br { bottom: 0; right: 0; text-align: right; }
+  .mline { position: absolute; background: var(--line); }
+  .mline.h { left: 0; right: 0; top: 50%; height: 1px; }
+  .mline.v { top: 0; bottom: 0; left: 50%; width: 1px; }
+  .you { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 2px 8px rgba(59,91,219,.5); transform: translate(-50%, 50%); transition: left .5s cubic-bezier(.2,.7,.2,1), bottom .5s cubic-bezier(.2,.7,.2,1); z-index: 3; }
+  .you::after { content: "You"; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .axislabel { font-size: 12px; color: var(--faint); text-align: center; font-weight: 600; }
+  .axis-y { writing-mode: vertical-rl; transform: rotate(180deg); }
+  .matrix-grid { display: grid; grid-template-columns: 18px 1fr; grid-template-rows: 1fr 18px; gap: 6px; }
+  .matrix-grid .axis-x { grid-column: 2; }
+
+  .profile { margin-top: 6px; }
+  .prow { display: grid; grid-template-columns: 116px 1fr 78px; gap: 12px; align-items: center; padding: 5px 0; }
+  .prow .pn { font-size: 14px; font-weight: 650; }
+  .pbar { display: block; height: 8px; border-radius: 999px; background: #eef0f3; overflow: hidden; }
+  .pfill { display: block; height: 100%; border-radius: 999px; background: var(--accent); transition: width .5s ease; }
+  .prow.found .pfill { background: var(--faint); }
+  .prow.imp .pfill { background: var(--teal); }
+  .pval { font-size: 12px; color: var(--muted); text-align: right; }
+  .pgroup { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin: 14px 0 4px; }
+  .pgroup:first-child { margin-top: 0; }
+
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; margin-top: 18px; }
+  .panel h3 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 750; }
+  .panel p { margin: 0 0 12px; } .panel p:last-child { margin-bottom: 0; }
+  .nextmove { border-left: 3px solid var(--accent); }
+  .trapnote { background: var(--warn-soft); border: 1px solid #f3e3c4; }
+  .trapnote h3 { color: var(--warn); }
+
+  .footer-actions { text-align: center; margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  button.reset, button.share { appearance: none; cursor: pointer; font-size: 14px; padding: 9px 18px; border-radius: 999px; transition: all .15s; }
+  button.reset { background: none; border: 1px solid var(--line); color: var(--muted); }
+  button.reset:hover { border-color: var(--faint); color: var(--ink); }
+  button.share { background: var(--accent-soft); border: 1px solid #d4dafb; color: var(--accent); font-weight: 650; }
+  button.share:hover { background: #e4e9fe; }
+  button.share.done { background: var(--good-soft); border-color: #cdeed6; color: var(--good); }
+
+  .fineprint { color: var(--faint); font-size: 13px; text-align: center; margin-top: 40px; line-height: 1.5; }
+
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .wrap { padding: 38px 16px 90px; }
+    .seg span { font-size: 12px; padding: 8px 2px; }
+    .quad .qd { display: none; }
+    .prow { grid-template-columns: 92px 1fr 62px; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">AI usage · self-assessment</p>
+  <h1>Everyone thinks they're using AI fully.</h1>
+  <p class="lede">They're not — they're just using it <b>differently</b>. And almost everyone rates themselves higher than they are, because <b>frequency feels like maturity.</b> It isn't.</p>
+  <p class="sub">There are two <b>foundation modes</b> everyone shares, and five <b>capabilities that compound</b> — but capability is only half of it. The other half is whether your AI work actually <b>lands</b>: shipped, used by others, a number that moved. This rates both on <b>what you've genuinely done</b> — not what you intend. Rate each honestly.</p>
+
+  <hr class="rule" />
+
+  <!-- STEP 1 -->
+  <div class="steplabel"><span class="num">Step 1 · Capability</span></div>
+  <h2>How deep does each one go for you?</h2>
+  <p class="hint">Rate what's <b>true of your last two weeks</b> — "could do" doesn't count. Foundation modes don't earn maturity on their own; the five capabilities are what compound.</p>
+
+  <div class="tier">Foundation <span class="note">— everyone does these; they're the floor, not the goal</span></div>
+  <div class="caps" id="caps-foundation"></div>
+
+  <div class="tier">Leverage capabilities <span class="note">— additive; collect and deepen them in any order</span></div>
+  <div class="caps" id="caps-leverage"></div>
+
+  <hr class="rule" />
+
+  <!-- STEP 2 -->
+  <div class="steplabel"><span class="num">Step 2 · Impact</span></div>
+  <h2>What came of your AI work?</h2>
+  <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b> — not what you meant to happen, not how much you care. Evidence only.</p>
+  <div class="caps" id="caps-impact"></div>
+
+  <div class="cta"><button class="go" id="go">Show me where I land</button></div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <hr class="rule" />
+    <div class="result-head">
+      <div class="rl-kick">Where you land</div>
+      <h2 id="r-quad">—</h2>
+      <div class="chips" id="r-chips"></div>
+    </div>
+
+    <div class="matrix-wrap">
+      <div class="matrix-grid">
+        <div class="axis-y axislabel">More capability →</div>
+        <div class="matrix">
+          <div class="quad q-tl"><div class="qn">Output factory</div><div class="qd">Lots of capability, little lands. The trap.</div></div>
+          <div class="quad q-tr"><div class="qn">Force multiplier</div><div class="qd">High capability, real measured impact. The target.</div></div>
+          <div class="quad q-bl"><div class="qn">Dabbler</div><div class="qd">Occasional, and little lands yet.</div></div>
+          <div class="quad q-br"><div class="qn">Sharp operator</div><div class="qd">Lean tools, but it lands.</div></div>
+          <div class="mline h"></div>
+          <div class="mline v"></div>
+          <div class="you" id="you"></div>
+        </div>
+        <div></div>
+        <div class="axis-x axislabel">Output (little lands) ← → Outcome (real impact)</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Your profile</h3>
+      <div class="profile" id="r-profile"></div>
+    </div>
+
+    <div class="panel">
+      <h3>What this means</h3>
+      <p id="r-meaning">—</p>
+    </div>
+
+    <div class="panel nextmove">
+      <h3>Your next move</h3>
+      <p id="r-next">—</p>
+      <p id="r-nudge"></p>
+    </div>
+
+    <div class="panel trapnote" id="r-trap" style="display:none;">
+      <h3>⚠ The trap you're in</h3>
+      <p id="r-trap-text">—</p>
+    </div>
+
+    <div class="footer-actions">
+      <button class="share" id="share">Copy share link</button>
+      <button class="reset" id="reset">Start over</button>
+    </div>
+  </div>
+
+  <p class="fineprint">A self-assessment, not a scoreboard. Maturity is capability × whether it actually lands × honesty about both — not the one impressive thing you tried once. Building capability without shipping outcomes just means producing more, faster.</p>
+
+</div>
+
+<script>
+const FOUNDATION = [
+  { key: "ask", name: "Ask", tag: "Chat in, paste out",
+    tell: "I use AI as a chat window — paste context in, paste the answer back where it needs to go, by hand." },
+  { key: "make", name: "Make", tag: "One-off artifacts",
+    tell: "I get AI to produce whole drafts or deliverables, but each starts from scratch and I carry it forward manually." },
+];
+const LEVERAGE = [
+  { key: "connect", name: "Connect", tag: "Read & write systems",
+    tell: "AI reads from and writes back to my real tools — calendar, docs, CRM, repo — without me copy-pasting.",
+    deepen: "Wire AI into one more real system so it can read AND write — kill another copy-paste loop." },
+  { key: "compound", name: "Compound", tag: "Persistent, shared context",
+    tell: "I've built context AI reuses across sessions — a knowledge base, saved skills or prompts, shared docs others draw on too.",
+    deepen: "Turn your best one-off prompts into something persistent — a saved skill, a knowledge base, shared context others reuse." },
+  { key: "orchestrate", name: "Orchestrate", tag: "Multi-stage / multi-agent",
+    tell: "I run multi-step or multi-agent setups — parallel tasks, personas, pipelines — not just single prompts.",
+    deepen: "Chain your prompts into a multi-step or multi-agent workflow instead of running them one at a time." },
+  { key: "loop", name: "Loop", tag: "Closed feedback loop",
+    tell: "Something I built checks its own results and feeds them back in without me kicking off each cycle.",
+    deepen: "Make one of your workflows check its own output and re-run without you starting each cycle." },
+  { key: "delegate", name: "Delegate", tag: "Semi-autonomous",
+    tell: "AI surfaces work I didn't ask for, proposes a plan, and executes inside guardrails I set.",
+    deepen: "Let AI surface and plan a slice of work you didn't explicitly ask for, inside guardrails you set." },
+];
+const IMPACT = [
+  { key: "shipped", name: "Shipped",
+    stem: "AI-assisted work I made has shipped or gone live — used for real, not left as a draft or experiment." },
+  { key: "adopted", name: "Used by others",
+    stem: "Something I built with AI is actively used by other people, without me in the loop." },
+  { key: "measured", name: "Measured a result",
+    stem: "I can point to a specific result that moved because of my AI work — and I actually checked." },
+  { key: "actedon", name: "Acted on results",
+    stem: "I've doubled down on, changed, or killed AI work because of what the results showed." },
+];
+const ALL = FOUNDATION.concat(LEVERAGE);
+const DEPTH = ["Never", "Tried it", "Regularly", "Always"];
+const FREQ = ["Never", "Once", "A few times", "Often"];
+
+function capCard(c) {
+  const segs = DEPTH.map((d, v) =>
+    '<label><input type="radio" name="' + c.key + '" value="' + v + '">' +
+    '<span>' + d + '<span class="lvl">' + v + '</span></span></label>').join('');
+  return '<div class="cap"><span class="cap-name">' + c.name + '<span class="cap-tag">' + c.tag + '</span></span>' +
+    '<span class="cap-tell">' + c.tell + '</span>' +
+    '<div class="seg" role="radiogroup" aria-label="' + c.name + ' depth">' + segs + '</div></div>';
+}
+function impactCard(c) {
+  const segs = FREQ.map((d, v) =>
+    '<label><input type="radio" name="' + c.key + '" value="' + v + '">' +
+    '<span>' + d + '<span class="lvl">' + v + '</span></span></label>').join('');
+  return '<div class="cap"><span class="cap-stem">' + c.stem + '</span>' +
+    '<div class="seg tealset" role="radiogroup" aria-label="' + c.name + '">' + segs + '</div></div>';
+}
+document.getElementById('caps-foundation').innerHTML = FOUNDATION.map(capCard).join('');
+document.getElementById('caps-leverage').innerHTML = LEVERAGE.map(capCard).join('');
+document.getElementById('caps-impact').innerHTML = IMPACT.map(impactCard).join('');
+
+let resultsVisible = false;
+document.addEventListener('change', (e) => { if (e.target.matches('.seg input') && resultsVisible) render(); });
+
+function depthOf(key) {
+  const el = document.querySelector('input[name="' + key + '"]:checked');
+  return el ? +el.value : 0;
+}
+function compute() {
+  const found = FOUNDATION.map(c => depthOf(c.key));
+  const lev = LEVERAGE.map(c => depthOf(c.key));
+  const imp = IMPACT.map(c => depthOf(c.key));
+  return {
+    found, lev, imp,
+    foundationScore: found.reduce((a, b) => a + b, 0),   // 0..6
+    leverageScore: lev.reduce((a, b) => a + b, 0),       // 0..15
+    impactScore: imp.reduce((a, b) => a + b, 0),         // 0..12
+  };
+}
+function band(score) {
+  if (score <= 2) return "Foundation";
+  if (score <= 5) return "Emerging";
+  if (score <= 9) return "Integrated";
+  return "Fluent";
+}
+function impactWord(score) {
+  if (score <= 2) return "not landing yet";
+  if (score <= 4) return "starting to land";
+  if (score <= 8) return "landing";
+  return "compounding";
+}
+function quadrant(leverageScore, impactScore) {
+  const high = leverageScore >= 6;     // real capability portfolio
+  const outcome = impactScore >= 5;    // real-world evidence it lands
+  if (high && outcome) return 'target';
+  if (high && !outcome) return 'trap';
+  if (!high && outcome) return 'sharp';
+  return 'dabbler';
+}
+const QUAD = {
+  target: { name: "Force multiplier", cls: "target",
+    meaning: "Broad, deep capability — and it lands: your AI work ships, gets used by others, moves numbers you actually check. Rare, and the target. The risk now is complacency: as you add autonomy, keep auditing that it's pointed at real outcomes, not just impressive throughput." },
+  trap: { name: "Output factory", cls: "trap",
+    meaning: "You've built real capability — several skills, practised deeply. From the outside it looks like the most advanced quadrant, which is exactly why it's the trap: little of it has actually shipped, been picked up by others, or moved a number you measured. The fix isn't more capability; it's pointing what you already have at a real outcome and proving it landed." },
+  sharp: { name: "Sharp operator", cls: "neutral",
+    meaning: "You keep your AI use lean — but it lands: things ship, people use them, results show up. That already beats people running fancier setups that never leave the lab. Your gap isn't impact, it's leverage: the same delivery discipline applied to more connected, persistent, or orchestrated AI would compound." },
+  dabbler: { name: "Dabbler", cls: "neutral",
+    meaning: "You use AI here and there, and little of it has landed yet. A fine place to start — and the biggest gains are right in front of you. Move on both axes: build real capability on top of the foundation, and start shipping AI work whose results you actually track." },
+};
+
+function nextMove(lev, leverageScore) {
+  if (leverageScore === 0) {
+    return "You haven't moved past the foundation yet — and that's the honest starting line. " + LEVERAGE[0].deepen;
+  }
+  let gapIdx = -1, gapVal = 4;
+  lev.forEach((v, i) => { if (v < 3 && v < gapVal) { gapVal = v; gapIdx = i; } });
+  if (gapIdx === -1) {
+    return "You're deep across every capability — there's no thin spot left to fill. The frontier now is the other axis: keep what you've built pointed at outcomes you can actually show landed.";
+  }
+  const c = LEVERAGE[gapIdx];
+  const lead = gapVal === 0
+    ? "Your biggest untapped capability is <b>" + c.name + "</b> — you don't do this yet. "
+    : "Your thinnest compounding capability is <b>" + c.name + "</b> — you've only " + (gapVal === 1 ? "dabbled" : "done it sometimes") + ". ";
+  return lead + c.deepen;
+}
+
+function render() {
+  const { found, lev, imp, foundationScore, leverageScore, impactScore } = compute();
+  const q = quadrant(leverageScore, impactScore);
+  const qd = QUAD[q];
+
+  const h = document.getElementById('r-quad');
+  h.textContent = qd.name;
+  h.className = qd.cls;
+  document.getElementById('r-chips').innerHTML =
+    '<span class="chip"><span class="dotmark"></span>Capability ' + leverageScore + '/15 · ' + band(leverageScore) + '</span>' +
+    '<span class="chip teal"><span class="dotmark"></span>Impact ' + impactScore + '/12 · ' + impactWord(impactScore) + '</span>';
+
+  // dot: x = impact evidence, y = capability portfolio
+  document.getElementById('you').style.left = Math.max(6, Math.min(94, (impactScore / 12) * 100)) + '%';
+  document.getElementById('you').style.bottom = Math.max(6, Math.min(94, (leverageScore / 15) * 100)) + '%';
+
+  // profile
+  const prow = (name, v, cls, labels) =>
+    '<div class="prow' + (cls ? ' ' + cls : '') + '">' +
+    '<span class="pn">' + name + '</span>' +
+    '<span class="pbar"><span class="pfill" style="width:' + (v / 3 * 100) + '%"></span></span>' +
+    '<span class="pval">' + labels[v] + '</span></div>';
+  document.getElementById('r-profile').innerHTML =
+    '<div class="pgroup">Foundation</div>' +
+    FOUNDATION.map((c, i) => prow(c.name, found[i], 'found', DEPTH)).join('') +
+    '<div class="pgroup">Leverage capabilities</div>' +
+    LEVERAGE.map((c, i) => prow(c.name, lev[i], '', DEPTH)).join('') +
+    '<div class="pgroup">Impact evidence</div>' +
+    IMPACT.map((c, i) => prow(c.name, imp[i], 'imp', FREQ)).join('');
+
+  document.getElementById('r-meaning').textContent = qd.meaning;
+  document.getElementById('r-next').innerHTML = nextMove(lev, leverageScore);
+
+  const nudge = document.getElementById('r-nudge');
+  const notes = [];
+  if (leverageScore < 3 && foundationScore >= 4) {
+    notes.push("You're fluent at the foundation — chat and one-off artifacts — but haven't built leverage on top of it. That's the gap, and it's the biggest one.");
+  }
+  if (impactScore < 5) {
+    notes.push("And on the impact axis: little of your AI work has visibly landed yet — not much has shipped, been picked up by others, or moved a number you checked. Capability without that is just output. Take your most-used AI work and find the one result it actually changed.");
+  }
+  nudge.textContent = notes.join(' ');
+  nudge.style.display = notes.length ? '' : 'none';
+
+  const trap = document.getElementById('r-trap');
+  if (q === 'trap') {
+    trap.style.display = '';
+    document.getElementById('r-trap-text').textContent = "You're high on capability and low on impact evidence — the quadrant most likely to mistake itself for the top. The people who most confidently believe they've “mastered AI” usually live right here. The honest test: name one thing that's measurably better because of your AI work, that someone other than you relies on — not just faster or more abundant output.";
+  } else {
+    trap.style.display = 'none';
+  }
+
+  syncURL();
+}
+
+// --- Shareable state in the URL hash: 7 capability digits . 4 impact digits ---
+function encodeState() {
+  const caps = ALL.map(c => depthOf(c.key)).join('');
+  const imp = IMPACT.map(c => depthOf(c.key)).join('');
+  return 's=' + caps + '.' + imp;
+}
+function syncURL() {
+  try { history.replaceState(null, '', location.pathname + location.search + '#' + encodeState()); } catch (e) {}
+}
+function setRadio(key, v) {
+  const el = document.querySelector('input[name="' + key + '"][value="' + v + '"]');
+  if (el) el.checked = true;
+}
+function applyStateFromURL() {
+  const m = (location.hash || '').match(/s=([0-3]{0,7})\.([0-3]{0,4})/);
+  if (!m) return false;
+  const caps = m[1], imp = m[2];
+  ALL.forEach((c, i) => setRadio(c.key, caps[i] !== undefined ? +caps[i] : 0));
+  IMPACT.forEach((c, i) => setRadio(c.key, imp[i] !== undefined ? +imp[i] : 0));
+  return true;
+}
+
+document.getElementById('go').addEventListener('click', () => {
+  resultsVisible = true;
+  const res = document.getElementById('results');
+  res.classList.add('show');
+  render();
+  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+  document.querySelectorAll('.seg input').forEach(r => { r.checked = false; });
+  resultsVisible = false;
+  document.getElementById('results').classList.remove('show');
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+document.getElementById('share').addEventListener('click', (e) => {
+  syncURL();
+  const url = location.href, btn = e.currentTarget;
+  const done = () => { btn.textContent = 'Link copied ✓'; btn.classList.add('done'); setTimeout(() => { btn.textContent = 'Copy share link'; btn.classList.remove('done'); }, 2000); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done).catch(() => prompt('Copy your share link:', url));
+  } else { prompt('Copy your share link:', url); }
+});
+
+if (applyStateFromURL()) {
+  resultsVisible = true;
+  const res = document.getElementById('results');
+  res.classList.add('show');
+  render();
+  setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+}
+</script>
+</body>
+</html>
