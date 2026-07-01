@@ -296,7 +296,7 @@ const IMPACT = [
     eg: "e.g. you killed a workflow that wasn't helping, or doubled down on one that measurably was." },
 ];
 const ALL = FOUNDATION.concat(LEVERAGE);
-const DEPTH = ["Never", "Tried it", "Regularly"];
+const DEPTH = ["Never", "Sometimes", "Regularly"];
 const FREQ = ["Never", "Sometimes", "Often"];
 const FOUND = ["My main mode", "Sometimes", "Moved past"]; // foundation: progression, right = graduated
 const CAP_MAX = 2; // points per item (top of each scale)
@@ -357,7 +357,7 @@ function nextMove(lev, leverageScore) {
   const c = LEVERAGE[gapIdx];
   const lead = gapVal === 0
     ? "Your biggest untapped capability is <b>" + c.name + "</b> — you don't do this yet. "
-    : "Your thinnest compounding capability is <b>" + c.name + "</b> — you've only tried it. ";
+    : "Your thinnest compounding capability is <b>" + c.name + "</b> — you only do it sometimes. ";
   return lead + c.deepen;
 }
 
