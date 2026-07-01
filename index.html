@@ -24,7 +24,11 @@
     color: var(--ink); background: var(--paper);
     line-height: 1.5; font-size: 17px; -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 64px 24px 140px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 56px 24px 120px; }
+
+  .view[hidden] { display: none; }
+  .view { animation: fade .3s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
   .kicker { text-transform: uppercase; letter-spacing: .2em; font-size: 11px; font-weight: 700; color: var(--g2); margin: 0 0 20px; }
   h1 { font-size: clamp(32px, 6.5vw, 48px); line-height: 1.02; letter-spacing: -.028em; font-weight: 800; margin: 0 0 24px; }
@@ -32,21 +36,28 @@
   .sub { color: var(--g1); font-size: 16px; margin: 0; }
   .sub b, .lede b { color: var(--ink); font-weight: 700; }
 
-  hr.major { border: 0; border-top: 1px solid var(--ink); margin: 52px 0 0; }
-  .step { margin-top: 38px; }
-  .step-no { text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 700; color: var(--ink); }
-  .step h2 { font-size: clamp(22px, 4vw, 27px); letter-spacing: -.015em; font-weight: 750; margin: 10px 0 6px; }
+  /* progress indicator */
+  .progress { margin: 40px 0 0; }
+  .pbar-steps { display: flex; gap: 5px; }
+  .pbar-steps .pstep { flex: 1; height: 3px; background: var(--line); }
+  .pbar-steps .pstep.on { background: var(--ink); }
+  .progress-label { display: block; margin-top: 9px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 700; color: var(--g2); }
+  .view-1 .progress { margin-top: 48px; }
+
+  .step { margin-top: 26px; }
+  .step h2 { font-size: clamp(22px, 4vw, 27px); letter-spacing: -.015em; font-weight: 750; margin: 0 0 6px; }
   .step .hint { color: var(--g1); font-size: 15px; margin: 0; }
   .step .hint b { color: var(--ink); }
 
-  .tier { display: flex; align-items: baseline; gap: 12px; margin: 36px 0 0; flex-wrap: wrap; }
+  .tier { display: flex; align-items: baseline; gap: 12px; margin: 34px 0 0; flex-wrap: wrap; }
   .tier .t-name { text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 800; }
   .tier .t-note { color: var(--g2); font-size: 13px; }
 
   /* question item — no card; hairline-separated */
   .item { padding: 24px 0; border-top: 1px solid var(--line); }
   .item-label { text-transform: uppercase; letter-spacing: .09em; font-size: 11px; font-weight: 700; color: var(--g2); }
-  .item-stmt { font-size: 17.5px; line-height: 1.4; font-weight: 500; margin: 7px 0 16px; max-width: 54ch; }
+  .item-stmt { font-size: 17.5px; line-height: 1.4; font-weight: 500; margin: 7px 0 5px; max-width: 54ch; }
+  .item-eg { font-size: 14px; line-height: 1.4; color: var(--g2); margin: 0 0 15px; max-width: 54ch; }
 
   /* compact, recessive answer strip */
   .seg { display: inline-flex; border: 1px solid var(--line2); }
@@ -58,17 +69,17 @@
   .seg input:checked + span { background: var(--ink); color: #fff; }
   .seg input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
 
-  .cta { margin: 52px 0 0; }
+  /* navigation */
+  .nav { margin-top: 46px; }
   button.go { appearance: none; border: 0; cursor: pointer; background: var(--ink); color: #fff; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; padding: 17px 32px; width: 100%; }
   button.go:active { opacity: .85; }
+  .nav-note { text-align: center; font-size: 12px; color: var(--g2); margin: 14px 0 0; }
+  button.back { appearance: none; background: none; border: 0; cursor: pointer; color: var(--g1); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: 12px; display: block; margin: 6px auto 0; }
+  button.back:hover { color: var(--ink); }
 
-  #results { display: none; }
-  #results.show { display: block; animation: fade .35s ease; }
-  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-
-  .r-top { padding-top: 44px; border-top: 1px solid var(--ink); margin-top: 8px; }
-  .r-kick { text-transform: uppercase; letter-spacing: .18em; font-size: 11px; font-weight: 700; color: var(--g2); }
-  .r-name { font-size: clamp(30px, 6.5vw, 44px); font-weight: 800; letter-spacing: -.025em; line-height: 1.05; margin: 10px 0 6px; }
+  /* results */
+  .r-top { margin: 4px 0 0; }
+  .r-name { font-size: clamp(30px, 6.5vw, 44px); font-weight: 800; letter-spacing: -.025em; line-height: 1.05; margin: 8px 0 6px; }
   .r-short { color: var(--g1); font-size: 16px; margin: 0 0 26px; }
 
   .readout { display: flex; border: 1px solid var(--line2); }
@@ -112,17 +123,17 @@
   .pgroup { text-transform: uppercase; letter-spacing: .12em; font-size: 10px; font-weight: 800; color: var(--g2); margin: 20px 0 6px; }
   .pgroup:first-child { margin-top: 0; }
 
-  .foot { margin-top: 40px; display: flex; border: 1px solid var(--line2); width: fit-content; }
+  .foot { margin-top: 40px; display: flex; border: 1px solid var(--line2); width: fit-content; flex-wrap: wrap; }
   .foot button { appearance: none; cursor: pointer; background: var(--paper); border: 0; font-size: 12px; font-weight: 700; padding: 12px 22px; color: var(--ink); text-transform: uppercase; letter-spacing: .08em; }
   .foot button + button { border-left: 1px solid var(--line2); }
   .foot button:hover { background: var(--soft); }
   .foot button.done { background: var(--ink); color: #fff; }
 
-  .fineprint { color: var(--g2); font-size: 13px; margin-top: 52px; line-height: 1.55; border-top: 1px solid var(--line); padding-top: 22px; }
+  .fineprint { color: var(--g2); font-size: 13px; margin-top: 56px; line-height: 1.55; border-top: 1px solid var(--line); padding-top: 22px; }
 
   @media (max-width: 520px) {
     body { font-size: 16px; }
-    .wrap { padding: 44px 18px 90px; }
+    .wrap { padding: 40px 18px 90px; }
     .seg { display: flex; width: 100%; }
     .seg label { flex: 1; }
     .seg span { padding: 10px 4px; text-align: center; font-size: 12px; }
@@ -130,48 +141,70 @@
     .ro + .ro { border-left: 0; border-top: 1px solid var(--line2); }
     .prow { grid-template-columns: 88px 1fr 62px; gap: 8px; }
     .quad .qd { display: none; }
+    .foot button { flex: 1; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <p class="kicker">The AI Leverage Check · a 2-minute self-check</p>
-  <h1>Everyone thinks they're using AI fully.</h1>
-  <p class="lede">They're not. Everyone uses it <b>differently</b>, and most people rate themselves higher than they are, because <b>frequency feels like leverage.</b> It isn't.</p>
-  <p class="sub">Two things make the difference: how many of the things AI can do for you that you actually <b>practise</b>, and whether your AI work has actually <b>landed</b> — shipped, used by others, a number that moved. This rates both on what you've genuinely done. Answer for the last two weeks, honestly.</p>
+  <!-- ============ VIEW 1 · CAPABILITY ============ -->
+  <section class="view view-1" id="view-1">
+    <p class="kicker">The AI Leverage Check · a 2-minute self-check</p>
+    <h1>Everyone thinks they're using AI fully.</h1>
+    <p class="lede">They're not. Everyone uses it <b>differently</b>, and most people rate themselves higher than they are, because <b>frequency feels like leverage.</b> It isn't.</p>
+    <p class="sub">Two things make the difference: how many of the things AI can do for you that you actually <b>practise</b>, and whether your AI work has actually <b>landed</b> — shipped, used by others, a number that moved. This rates both, on what you've genuinely done. Two minutes, three steps.</p>
 
-  <hr class="major" />
+    <div class="progress">
+      <div class="pbar-steps"><span class="pstep on"></span><span class="pstep"></span><span class="pstep"></span></div>
+      <span class="progress-label">Step 1 of 3 · Capability</span>
+    </div>
 
-  <!-- STEP 1 -->
-  <div class="step">
-    <span class="step-no">Step 1 · Capability</span>
-    <h2>How deep does each one go for you?</h2>
-    <p class="hint">Rate what's <b>true of your last two weeks</b> — not what you could do. Pick the top level only if you can name a specific, recent example.</p>
+    <div class="step">
+      <h2>How deep does each one go for you?</h2>
+      <p class="hint">Rate what's <b>true of your last two weeks</b> — not what you could do. Pick the top level only if you can name a specific, recent example.</p>
 
-    <div class="tier"><span class="t-name">Foundation</span><span class="t-note">everyone does these — the floor, not the goal</span></div>
-    <div id="caps-foundation"></div>
+      <div class="tier"><span class="t-name">Foundation</span><span class="t-note">everyone does these — the floor, not the goal</span></div>
+      <div id="caps-foundation"></div>
 
-    <div class="tier"><span class="t-name">Leverage capabilities</span><span class="t-note">additive — collect and deepen in any order</span></div>
-    <div id="caps-leverage"></div>
-  </div>
+      <div class="tier"><span class="t-name">Leverage capabilities</span><span class="t-note">additive — collect and deepen in any order</span></div>
+      <div id="caps-leverage"></div>
+    </div>
 
-  <hr class="major" />
+    <div class="nav">
+      <button class="go" id="to-2">Next: what came of it →</button>
+      <p class="nav-note"><span id="prog-1">0 of 7 rated</span> · blank counts as “never”</p>
+    </div>
+  </section>
 
-  <!-- STEP 2 -->
-  <div class="step">
-    <span class="step-no">Step 2 · Impact</span>
-    <h2>What came of your AI work?</h2>
-    <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b>, and only where the AI genuinely drove it rather than just happening alongside. Evidence, not intent.</p>
-    <div id="caps-impact"></div>
-  </div>
+  <!-- ============ VIEW 2 · IMPACT ============ -->
+  <section class="view view-2" id="view-2" hidden>
+    <div class="progress">
+      <div class="pbar-steps"><span class="pstep on"></span><span class="pstep on"></span><span class="pstep"></span></div>
+      <span class="progress-label">Step 2 of 3 · Impact</span>
+    </div>
 
-  <div class="cta"><button class="go" id="go">Show me where I land</button></div>
+    <div class="step">
+      <h2>What came of your AI work?</h2>
+      <p class="hint">Capability means nothing if nothing lands. Rate these on <b>what actually happened</b>, and only where the AI genuinely drove it rather than just happening alongside. Evidence, not intent.</p>
+      <div id="caps-impact"></div>
+    </div>
 
-  <!-- RESULTS -->
-  <div id="results">
+    <div class="nav">
+      <button class="go" id="to-3">See where I land →</button>
+      <p class="nav-note"><span id="prog-2">0 of 4 rated</span></p>
+      <button class="back" id="back-1">← Back to capability</button>
+    </div>
+  </section>
+
+  <!-- ============ VIEW 3 · RESULTS ============ -->
+  <section class="view view-3" id="view-3" hidden>
+    <div class="progress">
+      <div class="pbar-steps"><span class="pstep on"></span><span class="pstep on"></span><span class="pstep on"></span></div>
+      <span class="progress-label">Step 3 of 3 · Your read</span>
+    </div>
+
     <div class="r-top">
-      <div class="r-kick">Your read</div>
       <div class="r-name" id="r-name">—</div>
       <div class="r-short" id="r-short">—</div>
     </div>
@@ -208,9 +241,10 @@
 
     <div class="foot">
       <button id="share">Copy share link</button>
+      <button id="edit">Edit answers</button>
       <button id="reset">Start over</button>
     </div>
-  </div>
+  </section>
 
   <p class="fineprint">This is an opinionated self-check built from a point of view, not a validated measurement calibrated against data. Treat it as a mirror to think with and a prompt for your next move, not a score to defend. The bands and cut-offs are deliberate judgement calls, not science. Your answers stay in the share link; nothing is sent anywhere.</p>
 
@@ -219,36 +253,47 @@
 <script>
 const FOUNDATION = [
   { key: "ask", name: "Ask", tag: "Chat in, paste out",
-    tell: "I use AI as a chat window — paste context in, paste the answer back where it needs to go, by hand." },
+    tell: "I use AI as a chat window — paste context in, paste the answer back where it needs to go, by hand.",
+    eg: "e.g. you ask Claude or ChatGPT something, then copy the reply into your doc, email, or editor yourself." },
   { key: "make", name: "Make", tag: "One-off artifacts",
-    tell: "I get AI to produce whole drafts or deliverables, but each starts from scratch and I carry it forward manually." },
+    tell: "I get AI to produce whole drafts or deliverables, but each starts from scratch and I carry it forward manually.",
+    eg: "e.g. AI drafts a whole blog post, deck, or function and you take it the rest of the way by hand." },
 ];
 const LEVERAGE = [
   { key: "connect", name: "Connect", tag: "Read & write systems",
     tell: "AI reads from and writes back to my real tools — calendar, docs, CRM, repo — without me copy-pasting.",
+    eg: "e.g. AI updates a CRM record, files a ticket, or edits a shared doc directly — no copy-paste.",
     deepen: "Wire AI into one more real system so it can read AND write — kill another copy-paste loop." },
   { key: "compound", name: "Compound", tag: "Persistent, shared context",
     tell: "I've built context AI reuses across sessions — a knowledge base, saved skills or prompts, shared docs others draw on too.",
+    eg: "e.g. a knowledge base, a saved prompt library, or a Claude Project / custom GPT your team also draws on.",
     deepen: "Turn your best one-off prompts into something persistent — a saved skill, a knowledge base, shared context others reuse." },
   { key: "orchestrate", name: "Orchestrate", tag: "Multi-stage / multi-agent",
     tell: "I run multi-step or multi-agent setups — parallel tasks, personas, pipelines — not just single prompts.",
+    eg: "e.g. a pipeline that researches, drafts, then reviews in stages — or several agents running in parallel.",
     deepen: "Chain your prompts into a multi-step or multi-agent workflow instead of running them one at a time." },
   { key: "loop", name: "Loop", tag: "Closed feedback loop",
     tell: "Something I built checks its own results and feeds them back in without me kicking off each cycle.",
+    eg: "e.g. a workflow that checks its own output against tests or a metric and retries until it passes, without you restarting it.",
     deepen: "Make one of your workflows check its own output and re-run without you starting each cycle." },
   { key: "delegate", name: "Delegate", tag: "Semi-autonomous",
     tell: "AI surfaces work I didn't ask for, proposes a plan, and executes inside guardrails I set.",
+    eg: "e.g. an agent that watches your inbox or repo, spots the work, proposes a plan, and acts within limits you set.",
     deepen: "Let AI surface and plan a slice of work you didn't explicitly ask for, inside guardrails you set." },
 ];
 const IMPACT = [
   { key: "shipped", name: "Shipped",
-    stem: "AI-assisted work I made has shipped or gone live — used for real, not left as a draft or experiment." },
+    stem: "AI-assisted work I made has shipped or gone live — used for real, not left as a draft or experiment.",
+    eg: "e.g. an AI-drafted page went live, a script you built runs in production, a proposal you made with AI was sent." },
   { key: "adopted", name: "Used by others",
-    stem: "Something I built with AI is actively used by other people, without me in the loop." },
+    stem: "Something I built with AI is actively used by other people, without me in the loop.",
+    eg: "e.g. a teammate uses a prompt, tool, or doc you built — without asking you how it works." },
   { key: "measured", name: "Measured a result",
-    stem: "I can point to a specific result that moved because of my AI work — and I actually checked." },
+    stem: "I can point to a specific result that moved because of my AI work — and I actually checked.",
+    eg: "e.g. a response time dropped, a deal closed faster, hours saved that you actually tracked." },
   { key: "actedon", name: "Acted on results",
-    stem: "I've doubled down on, changed, or killed AI work because of what the results showed." },
+    stem: "I've doubled down on, changed, or killed AI work because of what the results showed.",
+    eg: "e.g. you killed a workflow that wasn't helping, or doubled down on one that measurably was." },
 ];
 const ALL = FOUNDATION.concat(LEVERAGE);
 const DEPTH = ["Never", "Tried it", "Regularly"];
@@ -260,20 +305,14 @@ function seg(key, labels) {
     labels.map((d, v) => '<label><input type="radio" name="' + key + '" value="' + v + '"><span>' + d + '</span></label>').join('') +
     '</div>';
 }
-function capCard(c) {
-  return '<div class="item"><span class="item-label">' + c.name + ' · ' + c.tag + '</span>' +
-    '<p class="item-stmt">' + c.tell + '</p>' + seg(c.key, DEPTH) + '</div>';
+function itemCard(c, stmt, labels) {
+  return '<div class="item"><span class="item-label">' + c.name + (c.tag ? ' · ' + c.tag : '') + '</span>' +
+    '<p class="item-stmt">' + stmt + '</p>' +
+    '<p class="item-eg">' + c.eg + '</p>' + seg(c.key, labels) + '</div>';
 }
-function impactCard(c) {
-  return '<div class="item"><span class="item-label">' + c.name + '</span>' +
-    '<p class="item-stmt">' + c.stem + '</p>' + seg(c.key, FREQ) + '</div>';
-}
-document.getElementById('caps-foundation').innerHTML = FOUNDATION.map(capCard).join('');
-document.getElementById('caps-leverage').innerHTML = LEVERAGE.map(capCard).join('');
-document.getElementById('caps-impact').innerHTML = IMPACT.map(impactCard).join('');
-
-let resultsVisible = false;
-document.addEventListener('change', (e) => { if (e.target.matches('.seg input') && resultsVisible) render(); });
+document.getElementById('caps-foundation').innerHTML = FOUNDATION.map(c => itemCard(c, c.tell, DEPTH)).join('');
+document.getElementById('caps-leverage').innerHTML = LEVERAGE.map(c => itemCard(c, c.tell, DEPTH)).join('');
+document.getElementById('caps-impact').innerHTML = IMPACT.map(c => itemCard(c, c.stem, FREQ)).join('');
 
 function depthOf(key) { const el = document.querySelector('input[name="' + key + '"]:checked'); return el ? +el.value : 0; }
 function compute() {
@@ -368,6 +407,7 @@ function encodeState() {
   return 's=' + ALL.map(c => depthOf(c.key)).join('') + '.' + IMPACT.map(c => depthOf(c.key)).join('');
 }
 function syncURL() { try { history.replaceState(null, '', location.pathname + location.search + '#' + encodeState()); } catch (e) {} }
+function clearHash() { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
 function setRadio(key, v) { const el = document.querySelector('input[name="' + key + '"][value="' + v + '"]'); if (el) el.checked = true; }
 function applyStateFromURL() {
   const m = (location.hash || '').match(/s=([0-2]{0,7})\.([0-2]{0,4})/);
@@ -377,18 +417,28 @@ function applyStateFromURL() {
   return true;
 }
 
-document.getElementById('go').addEventListener('click', () => {
-  resultsVisible = true;
-  const res = document.getElementById('results');
-  res.classList.add('show'); render();
-  res.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
+// --- progress counters ---
+function ratedCount(items) { return items.filter(c => document.querySelector('input[name="' + c.key + '"]:checked')).length; }
+function updateProgress() {
+  document.getElementById('prog-1').textContent = ratedCount(ALL) + ' of ' + ALL.length + ' rated';
+  document.getElementById('prog-2').textContent = ratedCount(IMPACT) + ' of ' + IMPACT.length + ' rated';
+}
+document.addEventListener('change', (e) => { if (e.target.matches('.seg input')) updateProgress(); });
+
+// --- view navigation ---
+function showView(n) {
+  [1, 2, 3].forEach(i => { document.getElementById('view-' + i).hidden = (i !== n); });
+  if (n === 3) render(); else clearHash();
+  window.scrollTo({ top: 0 });
+}
+document.getElementById('to-2').addEventListener('click', () => showView(2));
+document.getElementById('back-1').addEventListener('click', () => showView(1));
+document.getElementById('to-3').addEventListener('click', () => showView(3));
+document.getElementById('edit').addEventListener('click', () => showView(1));
 document.getElementById('reset').addEventListener('click', () => {
   document.querySelectorAll('.seg input').forEach(r => { r.checked = false; });
-  resultsVisible = false;
-  document.getElementById('results').classList.remove('show');
-  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+  showView(1);
 });
 document.getElementById('share').addEventListener('click', (e) => {
   syncURL();
@@ -398,12 +448,10 @@ document.getElementById('share').addEventListener('click', (e) => {
   else prompt('Copy your share link:', url);
 });
 
-if (applyStateFromURL()) {
-  resultsVisible = true;
-  const res = document.getElementById('results');
-  res.classList.add('show'); render();
-  setTimeout(() => res.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
-}
+// --- load: a share link with answers lands on the result; otherwise start at step 1 ---
+updateProgress();
+if (applyStateFromURL()) { updateProgress(); showView(3); }
+else showView(1);
 </script>
 </body>
 </html>
